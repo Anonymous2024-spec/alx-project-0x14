@@ -1,40 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# MoviesDatabase API Project
 
-## Getting Started
+## API Overview
 
-First, run the development server:
+The MoviesDatabase API provides a comprehensive collection of information for movies, TV shows, and actors. It includes YouTube trailer URLs, awards, full biographies, and many other useful details. The API covers over **9 million titles** (movies, series, and episodes) and **11 million actors/crew members**, offering complete and regularly updated data:
+
+- Titles updated weekly
+- Ratings and episodes updated daily
+- All endpoints return an object with a `results` key
+- Paginated endpoints include `page`, `next`, and `entries` keys
+- All query parameters are **optional**
+
+Support the developers: [Buy Me a Coffee](https://www.buymeacoffee.com/SAdrian13)
+
+## Version
+
+Current version as provided in the documentation: **v1**
+
+## Available Endpoints
+
+Below are the main endpoints and their purposes (all parameters optional):
+
+- **`/titles`** – Retrieve a list of titles (movies, series, episodes)
+- **`/titles/{id}`** – Get detailed information for a specific title
+- **`/titles/search`** – Search for titles by keyword
+- **`/titles/{id}/crew`** – Get crew and cast information for a title
+- **`/actors/{id}`** – Get full biography and career info for an actor
+- **`/trailers/{id}`** – Retrieve YouTube trailer URL for a given title
+
+## Request and Response Format
+
+**Example Request:**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+GET https://moviesdatabase.p.rapidapi.com/titles
+Headers:
+  X-RapidAPI-Key: YOUR_API_KEY
+  X-RapidAPI-Host: moviesdatabase.p.rapidapi.com
+
+
+**Example Request:**
+{
+  "results": [
+    {
+      "id": "tt1234567",
+      "title": "Example Movie",
+      "year": 2024,
+      "trailer_url": "https://youtube.com/watch?v=example",
+      "rating": 8.5
+    }
+  ],
+  "page": 1,
+  "next": 2,
+  "entries": 50
+}
 ```
+Authentication
+Requests require authentication via RapidAPI:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+X-RapidAPI-Key: Your unique API key from RapidAPI
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+X-RapidAPI-Host: moviesdatabase.p.rapidapi.com
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Error Handling
+Common error responses:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+401 Unauthorized – Invalid or missing API key
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+404 Not Found – Endpoint or resource not found
 
-## Learn More
+429 Too Many Requests – Rate limit exceeded
+Handle errors by checking the response status and logging or displaying appropriate error messages.
 
-To learn more about Next.js, take a look at the following resources:
+Usage Limits and Best Practices
+RapidAPI usage limits depend on your subscription plan — check your account for quota details
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+Use pagination to limit large data requests
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Avoid excessive requests in a short period to prevent hitting rate limits
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+Cache frequent queries to reduce API calls and improve performance
